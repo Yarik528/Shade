@@ -3,9 +3,13 @@
   "package": "com.shade.mixin",
   "compatibilityLevel": "JAVA_8",
   "client": [
+    "WorldRendererMixin",
     "BlockRenderManagerMixin",
     "ClientPlayerEntityMixin",
-    "ClientPlayNetworkHandlerMixin"
+    "ClientPlayNetworkHandlerMixin",
+    "InGameHudMixin",
+    "MinecraftClientMixin",
+    "InGameOverlayRendererMixin"
   ],
   "injectors": { "defaultRequire": 1 }
 }
