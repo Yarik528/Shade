@@ -28,7 +28,7 @@ public class ClickGuiScreen extends Screen {
     private static final int CAT_W   = 90;
     private static final int ROW_H   = 18;
 
-    private final String[] categories = { "Combat", "Render", "World" };
+    private final String[] categories = { "Combat", "Render", "Movement", "World" };
     private int selectedCategory = 0;
     private Module expanded = null;
     private Slider dragging = null;
@@ -196,6 +196,8 @@ public class ClickGuiScreen extends Screen {
             case "ESP":
             case "XRay":
                 return "Render";
+            case "Sprint":
+                return "Movement";
             default:
                 return "World";
         }
@@ -370,13 +372,8 @@ public class ClickGuiScreen extends Screen {
     }
 
     @Override
-    public void removed() {
-        ConfigManager.save();
-    }
-
-    
     public boolean shouldPause() { return false; }
 
     @Override
     public boolean isPauseScreen() { return false; }
-              }
+                 }
