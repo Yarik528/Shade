@@ -6,7 +6,8 @@
     "WorldRendererMixin",
     "BlockRenderManagerMixin",
     "ClientPlayerEntityMixin",
-    "GameRendererMixin"
+    "GameRendererMixin",
+    "ClientPlayNetworkHandlerMixin"
   ],
   "injectors": { "defaultRequire": 1 }
 }
