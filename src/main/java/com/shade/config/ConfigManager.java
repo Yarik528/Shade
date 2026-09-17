@@ -53,6 +53,16 @@ public class ConfigManager {
                 Nametags n = (Nametags) m;
                 mod.addProperty("health", n.isShowHealth());
                 mod.addProperty("distance", n.isShowDistance());
+            } else if (m instanceof Snow) {
+                Snow s = (Snow) m;
+                mod.addProperty("radius", s.getRadius());
+                mod.addProperty("density", s.getDensity());
+            } else if (m instanceof Halo) {
+                Halo h = (Halo) m;
+                mod.addProperty("red", h.getRed());
+                mod.addProperty("green", h.getGreen());
+                mod.addProperty("blue", h.getBlue());
+                mod.addProperty("size", h.getSize());
             }
             root.add(m.getName(), mod);
         }
@@ -110,10 +120,20 @@ public class ConfigManager {
                     Nametags n = (Nametags) m;
                     n.setShowHealth(mod.get("health").getAsBoolean());
                     n.setShowDistance(mod.get("distance").getAsBoolean());
+                } else if (m instanceof Snow && mod.has("radius")) {
+                    Snow s = (Snow) m;
+                    s.setRadius(mod.get("radius").getAsInt());
+                    s.setDensity(mod.get("density").getAsInt());
+                } else if (m instanceof Halo && mod.has("red")) {
+                    Halo h = (Halo) m;
+                    h.setRed(mod.get("red").getAsFloat());
+                    h.setGreen(mod.get("green").getAsFloat());
+                    h.setBlue(mod.get("blue").getAsFloat());
+                    h.setSize(mod.get("size").getAsFloat());
                 }
             }
         } catch (Exception e) {
             System.err.println("[Shade] config load failed: " + e.getMessage());
         }
     }
-}
+                    }
