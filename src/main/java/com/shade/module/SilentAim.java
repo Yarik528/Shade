@@ -51,7 +51,7 @@ public class SilentAim extends Module {
         float pitch = (float)(-Math.toDegrees(Math.atan2(dy, dist)));
 
         if (gcdSnap) {
-            float sens = mc.options.mouseSensitivity * 0.6f + 0.2f;
+            float sens = (float)(mc.options.mouseSensitivity * 0.6 + 0.2);
             float gcd = sens * sens * sens * 1.2f;
             yaw = snapGcd(yaw, gcd);
             pitch = snapGcd(pitch, gcd);
