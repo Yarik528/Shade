@@ -39,6 +39,20 @@ public class ConfigManager {
                 mod.addProperty("horizontal", v.getHorizontalRaw());
                 mod.addProperty("vertical", v.getVerticalRaw());
                 mod.addProperty("antiDetect", v.isAntiDetect());
+            } else if (m instanceof NoRender) {
+                NoRender nr = (NoRender) m;
+                mod.addProperty("fire", nr.isFire());
+                mod.addProperty("water", nr.isWater());
+                mod.addProperty("portal", nr.isPortal());
+            } else if (m instanceof Tracers) {
+                Tracers t = (Tracers) m;
+                mod.addProperty("players", t.isShowPlayers());
+                mod.addProperty("hostile", t.isShowHostile());
+                mod.addProperty("passive", t.isShowPassive());
+            } else if (m instanceof Nametags) {
+                Nametags n = (Nametags) m;
+                mod.addProperty("health", n.isShowHealth());
+                mod.addProperty("distance", n.isShowDistance());
             }
             root.add(m.getName(), mod);
         }
@@ -82,10 +96,24 @@ public class ConfigManager {
                     v.setHorizontal(mod.get("horizontal").getAsDouble());
                     v.setVertical(mod.get("vertical").getAsDouble());
                     v.setAntiDetect(mod.get("antiDetect").getAsBoolean());
+                } else if (m instanceof NoRender && mod.has("fire")) {
+                    NoRender nr = (NoRender) m;
+                    nr.setFire(mod.get("fire").getAsBoolean());
+                    nr.setWater(mod.get("water").getAsBoolean());
+                    nr.setPortal(mod.get("portal").getAsBoolean());
+                } else if (m instanceof Tracers && mod.has("players")) {
+                    Tracers t = (Tracers) m;
+                    t.setShowPlayers(mod.get("players").getAsBoolean());
+                    t.setShowHostile(mod.get("hostile").getAsBoolean());
+                    t.setShowPassive(mod.get("passive").getAsBoolean());
+                } else if (m instanceof Nametags && mod.has("health")) {
+                    Nametags n = (Nametags) m;
+                    n.setShowHealth(mod.get("health").getAsBoolean());
+                    n.setShowDistance(mod.get("distance").getAsBoolean());
                 }
             }
         } catch (Exception e) {
             System.err.println("[Shade] config load failed: " + e.getMessage());
         }
     }
-                                                       }
+}
