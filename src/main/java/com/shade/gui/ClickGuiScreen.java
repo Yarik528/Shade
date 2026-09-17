@@ -374,7 +374,7 @@ public class ClickGuiScreen extends Screen {
         ConfigManager.save();
     }
 
-    @Override
+    
     public boolean shouldPause() { return false; }
 
     @Override
