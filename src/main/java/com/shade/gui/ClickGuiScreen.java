@@ -370,9 +370,7 @@ public class ClickGuiScreen extends Screen {
         }
         return super.mouseReleased(mx, my, button);
     }
-
-    @Override
-    public boolean shouldPause() { return false; }
+ 
 
     @Override
     public boolean isPauseScreen() { return false; }
