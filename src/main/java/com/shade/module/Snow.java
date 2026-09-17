@@ -31,7 +31,7 @@ public class Snow extends Module {
             double oz = (rng.nextDouble() - 0.5) * radius * 2;
 
             mc.world.addParticle(
-                ParticleTypes.SNOWFLAKE,
+                ParticleTypes.END_ROD,
                 pos.x + ox,
                 pos.y + oy,
                 pos.z + oz,
