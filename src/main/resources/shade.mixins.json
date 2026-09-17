@@ -9,7 +9,8 @@
     "ClientPlayNetworkHandlerMixin",
     "InGameHudMixin",
     "MinecraftClientMixin",
-    "InGameOverlayRendererMixin"
+    "InGameOverlayRendererMixin",
+    "PlayerEntityRendererMixin"
   ],
   "injectors": { "defaultRequire": 1 }
 }
