@@ -28,4 +28,4 @@ public class ClientPlayNetworkHandlerMixin {
         mc.player.setVelocity(vx, vy, vz);
         ci.cancel();
     }
-          }
+}
