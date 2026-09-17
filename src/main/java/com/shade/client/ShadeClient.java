@@ -18,6 +18,9 @@ public class ShadeClient implements ClientModInitializer {
         mm.register(new KillAura());
         mm.register(new Velocity());
         mm.register(new Sprint());
+        mm.register(new NoRender());
+        mm.register(new Nametags());
+        mm.register(new Tracers());
 
         ConfigManager.load();
         ClickGuiOpener.register();
