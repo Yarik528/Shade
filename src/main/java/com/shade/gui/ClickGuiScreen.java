@@ -28,7 +28,7 @@ public class ClickGuiScreen extends Screen {
     private static final int CAT_W   = 90;
     private static final int ROW_H   = 18;
 
-    private final String[] categories = { "Combat", "Render", "Movement", "World" };
+    private final String[] categories = { "Combat", "Render", "Cosmetic", "Movement", "World" };
     private int selectedCategory = 0;
     private Module expanded = null;
     private Slider dragging = null;
@@ -154,6 +154,24 @@ public class ClickGuiScreen extends Screen {
                 n.isShowHealth(), mouseX, mouseY, v -> n.setShowHealth(v));
             y = toggleRow(matrices, "Distance", x + 6, y + 2, w - 12,
                 n.isShowDistance(), mouseX, mouseY, v -> n.setShowDistance(v));
+        } else if (m instanceof Snow) {
+            Snow s = (Snow) m;
+            y = slider(matrices, "Radius", x + 6, y + 2, w - 12,
+                1f, 10f, (float) s.getRadius(), mouseX, mouseY,
+                v -> s.setRadius(v.intValue()));
+            y = slider(matrices, "Density", x + 6, y + 2, w - 12,
+                1f, 30f, (float) s.getDensity(), mouseX, mouseY,
+                v -> s.setDensity(v.intValue()));
+        } else if (m instanceof Halo) {
+            Halo h = (Halo) m;
+            y = slider(matrices, "Red", x + 6, y + 2, w - 12,
+                0f, 1f, h.getRed(), mouseX, mouseY, v -> h.setRed(v));
+            y = slider(matrices, "Green", x + 6, y + 2, w - 12,
+                0f, 1f, h.getGreen(), mouseX, mouseY, v -> h.setGreen(v));
+            y = slider(matrices, "Blue", x + 6, y + 2, w - 12,
+                0f, 1f, h.getBlue(), mouseX, mouseY, v -> h.setBlue(v));
+            y = slider(matrices, "Size", x + 6, y + 2, w - 12,
+                0.5f, 2f, h.getSize(), mouseX, mouseY, v -> h.setSize(v));
         }
         return y + 6;
     }
@@ -212,6 +230,9 @@ public class ClickGuiScreen extends Screen {
             case "Nametags":
             case "NoRender":
                 return "Render";
+            case "Snow":
+            case "Halo":
+                return "Cosmetic";
             case "Sprint":
                 return "Movement";
             default:
@@ -271,6 +292,8 @@ public class ClickGuiScreen extends Screen {
         if (m instanceof NoRender) return 46;
         if (m instanceof Tracers) return 46;
         if (m instanceof Nametags) return 32;
+        if (m instanceof Snow) return 32;
+        if (m instanceof Halo) return 60;
         return 0;
     }
 
@@ -279,42 +302,35 @@ public class ClickGuiScreen extends Screen {
         if (m instanceof KillAura) {
             KillAura k = (KillAura) m;
             if (hitSlider(x + 6, y + 13, w - 12, 6, mx, my)) {
-                dragging = makeSlider(x + 6, y + 13, w - 12, 1f, 20f,
-                    (float) k.getMinCps(), v -> k.setMinCps(v));
+                dragging = makeSlider(x + 6, y + 13, w - 12, 1f, 20f, (float) k.getMinCps(), v -> k.setMinCps(v));
                 applyDrag(mx); return true;
             }
             if (hitSlider(x + 6, y + 33, w - 12, 6, mx, my)) {
-                dragging = makeSlider(x + 6, y + 33, w - 12, 1f, 20f,
-                    (float) k.getMaxCps(), v -> k.setMaxCps(v));
+                dragging = makeSlider(x + 6, y + 33, w - 12, 1f, 20f, (float) k.getMaxCps(), v -> k.setMaxCps(v));
                 applyDrag(mx); return true;
             }
             if (hitSlider(x + 6, y + 53, w - 12, 6, mx, my)) {
-                dragging = makeSlider(x + 6, y + 53, w - 12, 30f, 360f,
-                    (float) k.getFov(), v -> k.setFov(v));
+                dragging = makeSlider(x + 6, y + 53, w - 12, 30f, 360f, (float) k.getFov(), v -> k.setFov(v));
                 applyDrag(mx); return true;
             }
         } else if (m instanceof Reach) {
             Reach r = (Reach) m;
             if (hitSlider(x + 6, y + 13, w - 12, 6, mx, my)) {
-                dragging = makeSlider(x + 6, y + 13, w - 12, 3f, 6f,
-                    (float) r.getBlockReachRaw(), v -> r.setBlockReach(v));
+                dragging = makeSlider(x + 6, y + 13, w - 12, 3f, 6f, (float) r.getBlockReachRaw(), v -> r.setBlockReach(v));
                 applyDrag(mx); return true;
             }
             if (hitSlider(x + 6, y + 33, w - 12, 6, mx, my)) {
-                dragging = makeSlider(x + 6, y + 33, w - 12, 3f, 6f,
-                    (float) r.getEntityReachRaw(), v -> r.setEntityReach(v));
+                dragging = makeSlider(x + 6, y + 33, w - 12, 3f, 6f, (float) r.getEntityReachRaw(), v -> r.setEntityReach(v));
                 applyDrag(mx); return true;
             }
         } else if (m instanceof Velocity) {
             Velocity v = (Velocity) m;
             if (hitSlider(x + 6, y + 13, w - 12, 6, mx, my)) {
-                dragging = makeSlider(x + 6, y + 13, w - 12, 0f, 1f,
-                    (float) v.getHorizontalRaw(), val -> v.setHorizontal(val));
+                dragging = makeSlider(x + 6, y + 13, w - 12, 0f, 1f, (float) v.getHorizontalRaw(), val -> v.setHorizontal(val));
                 applyDrag(mx); return true;
             }
             if (hitSlider(x + 6, y + 33, w - 12, 6, mx, my)) {
-                dragging = makeSlider(x + 6, y + 33, w - 12, 0f, 1f,
-                    (float) v.getVerticalRaw(), val -> v.setVertical(val));
+                dragging = makeSlider(x + 6, y + 33, w - 12, 0f, 1f, (float) v.getVerticalRaw(), val -> v.setVertical(val));
                 applyDrag(mx); return true;
             }
             if (hitToggle(x + w - 28, y + 49, mx, my)) {
@@ -322,12 +338,8 @@ public class ClickGuiScreen extends Screen {
             }
         } else if (m instanceof SilentAim) {
             SilentAim s = (SilentAim) m;
-            if (hitToggle(x + w - 28, y + 2, mx, my)) {
-                s.setGcdSnap(!s.isGcdSnap()); ConfigManager.save(); return true;
-            }
-            if (hitToggle(x + w - 28, y + 16, mx, my)) {
-                s.setMicroJitter(!s.isMicroJitter()); ConfigManager.save(); return true;
-            }
+            if (hitToggle(x + w - 28, y + 2, mx, my)) { s.setGcdSnap(!s.isGcdSnap()); ConfigManager.save(); return true; }
+            if (hitToggle(x + w - 28, y + 16, mx, my)) { s.setMicroJitter(!s.isMicroJitter()); ConfigManager.save(); return true; }
         } else if (m instanceof NoRender) {
             NoRender nr = (NoRender) m;
             if (hitToggle(x + w - 28, y + 2, mx, my)) { nr.setFire(!nr.isFire()); ConfigManager.save(); return true; }
@@ -342,6 +354,34 @@ public class ClickGuiScreen extends Screen {
             Nametags n = (Nametags) m;
             if (hitToggle(x + w - 28, y + 2, mx, my)) { n.setShowHealth(!n.isShowHealth()); ConfigManager.save(); return true; }
             if (hitToggle(x + w - 28, y + 16, mx, my)) { n.setShowDistance(!n.isShowDistance()); ConfigManager.save(); return true; }
+        } else if (m instanceof Snow) {
+            Snow s = (Snow) m;
+            if (hitSlider(x + 6, y + 13, w - 12, 6, mx, my)) {
+                dragging = makeSlider(x + 6, y + 13, w - 12, 1f, 10f, (float) s.getRadius(), v -> s.setRadius(v.intValue()));
+                applyDrag(mx); return true;
+            }
+            if (hitSlider(x + 6, y + 33, w - 12, 6, mx, my)) {
+                dragging = makeSlider(x + 6, y + 33, w - 12, 1f, 30f, (float) s.getDensity(), v -> s.setDensity(v.intValue()));
+                applyDrag(mx); return true;
+            }
+        } else if (m instanceof Halo) {
+            Halo h = (Halo) m;
+            if (hitSlider(x + 6, y + 13, w - 12, 6, mx, my)) {
+                dragging = makeSlider(x + 6, y + 13, w - 12, 0f, 1f, h.getRed(), v -> h.setRed(v));
+                applyDrag(mx); return true;
+            }
+            if (hitSlider(x + 6, y + 33, w - 12, 6, mx, my)) {
+                dragging = makeSlider(x + 6, y + 33, w - 12, 0f, 1f, h.getGreen(), v -> h.setGreen(v));
+                applyDrag(mx); return true;
+            }
+            if (hitSlider(x + 6, y + 53, w - 12, 6, mx, my)) {
+                dragging = makeSlider(x + 6, y + 53, w - 12, 0f, 1f, h.getBlue(), v -> h.setBlue(v));
+                applyDrag(mx); return true;
+            }
+            if (hitSlider(x + 6, y + 73, w - 12, 6, mx, my)) {
+                dragging = makeSlider(x + 6, y + 73, w - 12, 0.5f, 2f, h.getSize(), v -> h.setSize(v));
+                applyDrag(mx); return true;
+            }
         }
         return false;
     }
@@ -393,4 +433,4 @@ public class ClickGuiScreen extends Screen {
 
     @Override
     public boolean isPauseScreen() { return false; }
-                              }
+                       }
