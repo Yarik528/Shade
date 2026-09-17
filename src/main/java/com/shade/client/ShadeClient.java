@@ -21,6 +21,8 @@ public class ShadeClient implements ClientModInitializer {
         mm.register(new NoRender());
         mm.register(new Nametags());
         mm.register(new Tracers());
+        mm.register(new Snow());
+        mm.register(new Halo());
 
         ConfigManager.load();
         ClickGuiOpener.register();
@@ -30,4 +32,4 @@ public class ShadeClient implements ClientModInitializer {
             mm.tickAll();
         });
     }
-}
+            }
