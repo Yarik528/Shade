@@ -6,23 +6,26 @@ import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Redirect;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(ClientPlayerEntity.class)
 public class ClientPlayerEntityMixin {
 
-    @Redirect(method = "sendMovementPackets",
-              at = @At(value = "NEW",
-                       target = "(DDDFFZ)Lnet/minecraft/network/packet/c2s/play/PlayerMoveC2SPacket$LookAndOnGround;"))
-    private PlayerMoveC2SPacket.LookAndOnGround silentLook(
-            double x, double y, double z, float yaw, float pitch, boolean onGround) {
+    private int aimTick = 0;
 
+    @Inject(method = "tick", at = @At("TAIL"))
+    private void onTick(CallbackInfo ci) {
+        ClientPlayerEntity player = (ClientPlayerEntity)(Object)this;
         SilentAim aim = (SilentAim) ModuleManager.INSTANCE.byName("SilentAim");
-        if (aim != null && aim.isEnabled()) {
-            aim.updateSilentAngles();
-            return new PlayerMoveC2SPacket.LookAndOnGround(
-                aim.getSilentYaw(), aim.getSilentPitch(), onGround);
+        if (aim == null || !aim.isEnabled()) return;
+        if (player.world == null) return;
+
+        aim.updateSilentAngles();
+
+        if (++aimTick % 2 == 0) {
+            player.networkHandler.sendPacket(new PlayerMoveC2SPacket.LookOnly(
+                aim.getSilentYaw(), aim.getSilentPitch(), player.isOnGround()));
         }
-        return new PlayerMoveC2SPacket.LookAndOnGround(yaw, pitch, onGround);
     }
 }
