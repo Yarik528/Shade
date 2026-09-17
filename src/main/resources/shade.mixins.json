@@ -4,7 +4,9 @@
   "compatibilityLevel": "JAVA_8",
   "client": [
     "WorldRendererMixin",
-    "BlockRenderManagerMixin"
+    "BlockRenderManagerMixin",
+    "ClientPlayerEntityMixin",
+    "GameRendererMixin"
   ],
   "injectors": { "defaultRequire": 1 }
 }
