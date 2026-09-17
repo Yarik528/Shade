@@ -7,7 +7,9 @@
     "BlockRenderManagerMixin",
     "ClientPlayerEntityMixin",
     "GameRendererMixin",
-    "ClientPlayNetworkHandlerMixin"
+    "ClientPlayNetworkHandlerMixin",
+    "InGameHudMixin",
+    "MinecraftClientMixin"
   ],
   "injectors": { "defaultRequire": 1 }
 }
