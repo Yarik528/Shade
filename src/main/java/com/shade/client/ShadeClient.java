@@ -1,4 +1,3 @@
-// language: Java, file: src/main/java/com/shade/client/ShadeClient.java
 package com.shade.client;
 
 import com.shade.config.ConfigManager;
