@@ -107,22 +107,17 @@ public class ClickGuiScreen extends Screen {
         if (m instanceof KillAura) {
             KillAura k = (KillAura) m;
             y = slider(matrices, "Min CPS", x + 6, y + 2, w - 12,
-                1f, 20f, (float) k.getMinCps(), mouseX, mouseY,
-                v -> k.setMinCps(v));
+                1f, 20f, (float) k.getMinCps(), mouseX, mouseY, v -> k.setMinCps(v));
             y = slider(matrices, "Max CPS", x + 6, y + 2, w - 12,
-                1f, 20f, (float) k.getMaxCps(), mouseX, mouseY,
-                v -> k.setMaxCps(v));
+                1f, 20f, (float) k.getMaxCps(), mouseX, mouseY, v -> k.setMaxCps(v));
             y = slider(matrices, "FOV", x + 6, y + 2, w - 12,
-                30f, 360f, (float) k.getFov(), mouseX, mouseY,
-                v -> k.setFov(v));
+                30f, 360f, (float) k.getFov(), mouseX, mouseY, v -> k.setFov(v));
         } else if (m instanceof Reach) {
             Reach r = (Reach) m;
             y = slider(matrices, "Block Reach", x + 6, y + 2, w - 12,
-                3f, 6f, (float) r.getBlockReachRaw(), mouseX, mouseY,
-                v -> r.setBlockReach(v));
+                3f, 6f, (float) r.getBlockReachRaw(), mouseX, mouseY, v -> r.setBlockReach(v));
             y = slider(matrices, "Entity Reach", x + 6, y + 2, w - 12,
-                3f, 6f, (float) r.getEntityReachRaw(), mouseX, mouseY,
-                v -> r.setEntityReach(v));
+                3f, 6f, (float) r.getEntityReachRaw(), mouseX, mouseY, v -> r.setEntityReach(v));
         } else if (m instanceof SilentAim) {
             SilentAim s = (SilentAim) m;
             y = toggleRow(matrices, "GCD Snap", x + 6, y + 2, w - 12,
@@ -132,13 +127,33 @@ public class ClickGuiScreen extends Screen {
         } else if (m instanceof Velocity) {
             Velocity v = (Velocity) m;
             y = slider(matrices, "Horizontal", x + 6, y + 2, w - 12,
-                0f, 1f, (float) v.getHorizontalRaw(), mouseX, mouseY,
-                val -> v.setHorizontal(val));
+                0f, 1f, (float) v.getHorizontalRaw(), mouseX, mouseY, val -> v.setHorizontal(val));
             y = slider(matrices, "Vertical", x + 6, y + 2, w - 12,
-                0f, 1f, (float) v.getVerticalRaw(), mouseX, mouseY,
-                val -> v.setVertical(val));
+                0f, 1f, (float) v.getVerticalRaw(), mouseX, mouseY, val -> v.setVertical(val));
             y = toggleRow(matrices, "AntiDetect", x + 6, y + 2, w - 12,
                 v.isAntiDetect(), mouseX, mouseY, val -> v.setAntiDetect(val));
+        } else if (m instanceof NoRender) {
+            NoRender nr = (NoRender) m;
+            y = toggleRow(matrices, "Fire", x + 6, y + 2, w - 12,
+                nr.isFire(), mouseX, mouseY, v -> nr.setFire(v));
+            y = toggleRow(matrices, "Water", x + 6, y + 2, w - 12,
+                nr.isWater(), mouseX, mouseY, v -> nr.setWater(v));
+            y = toggleRow(matrices, "Portal", x + 6, y + 2, w - 12,
+                nr.isPortal(), mouseX, mouseY, v -> nr.setPortal(v));
+        } else if (m instanceof Tracers) {
+            Tracers t = (Tracers) m;
+            y = toggleRow(matrices, "Players", x + 6, y + 2, w - 12,
+                t.isShowPlayers(), mouseX, mouseY, v -> t.setShowPlayers(v));
+            y = toggleRow(matrices, "Hostile", x + 6, y + 2, w - 12,
+                t.isShowHostile(), mouseX, mouseY, v -> t.setShowHostile(v));
+            y = toggleRow(matrices, "Passive", x + 6, y + 2, w - 12,
+                t.isShowPassive(), mouseX, mouseY, v -> t.setShowPassive(v));
+        } else if (m instanceof Nametags) {
+            Nametags n = (Nametags) m;
+            y = toggleRow(matrices, "Health", x + 6, y + 2, w - 12,
+                n.isShowHealth(), mouseX, mouseY, v -> n.setShowHealth(v));
+            y = toggleRow(matrices, "Distance", x + 6, y + 2, w - 12,
+                n.isShowDistance(), mouseX, mouseY, v -> n.setShowDistance(v));
         }
         return y + 6;
     }
@@ -150,12 +165,10 @@ public class ClickGuiScreen extends Screen {
         int barY = y + 11;
         int barH = 4;
         fill(matrices, x, barY, x + w, barY + barH, BG_MODULE);
-
         float t = (val - min) / (max - min);
         int fillW = (int)(w * t);
         fill(matrices, x, barY, x + fillW, barY + barH, ACCENT);
         fill(matrices, x + fillW - 2, barY - 2, x + fillW + 2, barY + barH + 2, TEXT_ENABLED);
-
         return barY + barH + 6;
     }
 
@@ -195,6 +208,9 @@ public class ClickGuiScreen extends Screen {
                 return "Combat";
             case "ESP":
             case "XRay":
+            case "Tracers":
+            case "Nametags":
+            case "NoRender":
                 return "Render";
             case "Sprint":
                 return "Movement";
@@ -252,6 +268,9 @@ public class ClickGuiScreen extends Screen {
         if (m instanceof Reach) return 46;
         if (m instanceof SilentAim) return 32;
         if (m instanceof Velocity) return 66;
+        if (m instanceof NoRender) return 46;
+        if (m instanceof Tracers) return 46;
+        if (m instanceof Nametags) return 32;
         return 0;
     }
 
@@ -262,66 +281,67 @@ public class ClickGuiScreen extends Screen {
             if (hitSlider(x + 6, y + 13, w - 12, 6, mx, my)) {
                 dragging = makeSlider(x + 6, y + 13, w - 12, 1f, 20f,
                     (float) k.getMinCps(), v -> k.setMinCps(v));
-                applyDrag(mx);
-                return true;
+                applyDrag(mx); return true;
             }
             if (hitSlider(x + 6, y + 33, w - 12, 6, mx, my)) {
                 dragging = makeSlider(x + 6, y + 33, w - 12, 1f, 20f,
                     (float) k.getMaxCps(), v -> k.setMaxCps(v));
-                applyDrag(mx);
-                return true;
+                applyDrag(mx); return true;
             }
             if (hitSlider(x + 6, y + 53, w - 12, 6, mx, my)) {
                 dragging = makeSlider(x + 6, y + 53, w - 12, 30f, 360f,
                     (float) k.getFov(), v -> k.setFov(v));
-                applyDrag(mx);
-                return true;
+                applyDrag(mx); return true;
             }
         } else if (m instanceof Reach) {
             Reach r = (Reach) m;
             if (hitSlider(x + 6, y + 13, w - 12, 6, mx, my)) {
                 dragging = makeSlider(x + 6, y + 13, w - 12, 3f, 6f,
                     (float) r.getBlockReachRaw(), v -> r.setBlockReach(v));
-                applyDrag(mx);
-                return true;
+                applyDrag(mx); return true;
             }
             if (hitSlider(x + 6, y + 33, w - 12, 6, mx, my)) {
                 dragging = makeSlider(x + 6, y + 33, w - 12, 3f, 6f,
                     (float) r.getEntityReachRaw(), v -> r.setEntityReach(v));
-                applyDrag(mx);
-                return true;
+                applyDrag(mx); return true;
             }
         } else if (m instanceof Velocity) {
             Velocity v = (Velocity) m;
             if (hitSlider(x + 6, y + 13, w - 12, 6, mx, my)) {
                 dragging = makeSlider(x + 6, y + 13, w - 12, 0f, 1f,
                     (float) v.getHorizontalRaw(), val -> v.setHorizontal(val));
-                applyDrag(mx);
-                return true;
+                applyDrag(mx); return true;
             }
             if (hitSlider(x + 6, y + 33, w - 12, 6, mx, my)) {
                 dragging = makeSlider(x + 6, y + 33, w - 12, 0f, 1f,
                     (float) v.getVerticalRaw(), val -> v.setVertical(val));
-                applyDrag(mx);
-                return true;
+                applyDrag(mx); return true;
             }
             if (hitToggle(x + w - 28, y + 49, mx, my)) {
-                v.setAntiDetect(!v.isAntiDetect());
-                ConfigManager.save();
-                return true;
+                v.setAntiDetect(!v.isAntiDetect()); ConfigManager.save(); return true;
             }
         } else if (m instanceof SilentAim) {
             SilentAim s = (SilentAim) m;
             if (hitToggle(x + w - 28, y + 2, mx, my)) {
-                s.setGcdSnap(!s.isGcdSnap());
-                ConfigManager.save();
-                return true;
+                s.setGcdSnap(!s.isGcdSnap()); ConfigManager.save(); return true;
             }
             if (hitToggle(x + w - 28, y + 16, mx, my)) {
-                s.setMicroJitter(!s.isMicroJitter());
-                ConfigManager.save();
-                return true;
+                s.setMicroJitter(!s.isMicroJitter()); ConfigManager.save(); return true;
             }
+        } else if (m instanceof NoRender) {
+            NoRender nr = (NoRender) m;
+            if (hitToggle(x + w - 28, y + 2, mx, my)) { nr.setFire(!nr.isFire()); ConfigManager.save(); return true; }
+            if (hitToggle(x + w - 28, y + 16, mx, my)) { nr.setWater(!nr.isWater()); ConfigManager.save(); return true; }
+            if (hitToggle(x + w - 28, y + 30, mx, my)) { nr.setPortal(!nr.isPortal()); ConfigManager.save(); return true; }
+        } else if (m instanceof Tracers) {
+            Tracers t = (Tracers) m;
+            if (hitToggle(x + w - 28, y + 2, mx, my)) { t.setShowPlayers(!t.isShowPlayers()); ConfigManager.save(); return true; }
+            if (hitToggle(x + w - 28, y + 16, mx, my)) { t.setShowHostile(!t.isShowHostile()); ConfigManager.save(); return true; }
+            if (hitToggle(x + w - 28, y + 30, mx, my)) { t.setShowPassive(!t.isShowPassive()); ConfigManager.save(); return true; }
+        } else if (m instanceof Nametags) {
+            Nametags n = (Nametags) m;
+            if (hitToggle(x + w - 28, y + 2, mx, my)) { n.setShowHealth(!n.isShowHealth()); ConfigManager.save(); return true; }
+            if (hitToggle(x + w - 28, y + 16, mx, my)) { n.setShowDistance(!n.isShowDistance()); ConfigManager.save(); return true; }
         }
         return false;
     }
@@ -370,8 +390,7 @@ public class ClickGuiScreen extends Screen {
         }
         return super.mouseReleased(mx, my, button);
     }
- 
 
     @Override
     public boolean isPauseScreen() { return false; }
-                 }
+                              }
