@@ -10,7 +10,8 @@
     "InGameHudMixin",
     "MinecraftClientMixin",
     "InGameOverlayRendererMixin",
-    "PlayerEntityRendererMixin"
+    "PlayerEntityRendererMixin",
+    "TitleScreenMixin"
   ],
   "injectors": { "defaultRequire": 1 }
 }
