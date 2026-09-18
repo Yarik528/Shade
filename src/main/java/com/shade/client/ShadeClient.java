@@ -1,5 +1,6 @@
 package com.shade.client;
 
+import com.shade.alt.AltManager;
 import com.shade.config.ConfigManager;
 import com.shade.gui.ClickGuiOpener;
 import com.shade.module.*;
@@ -25,6 +26,7 @@ public class ShadeClient implements ClientModInitializer {
         mm.register(new Halo());
 
         ConfigManager.load();
+        AltManager.load();
         ClickGuiOpener.register();
 
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
@@ -32,4 +34,4 @@ public class ShadeClient implements ClientModInitializer {
             mm.tickAll();
         });
     }
-            }
+}
