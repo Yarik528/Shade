@@ -172,6 +172,14 @@ public class ClickGuiScreen extends Screen {
                 0f, 1f, h.getBlue(), mouseX, mouseY, v -> h.setBlue(v));
             y = slider(matrices, "Size", x + 6, y + 2, w - 12,
                 0.5f, 2f, h.getSize(), mouseX, mouseY, v -> h.setSize(v));
+        } else if (m instanceof Trail) {
+            Trail t = (Trail) m;
+            y = slider(matrices, "Length", x + 6, y + 2, w - 12,
+                5f, 50f, (float) t.getMaxLength(), mouseX, mouseY,
+                v -> t.setMaxLength(v.intValue()));
+            y = slider(matrices, "Density", x + 6, y + 2, w - 12,
+                1f, 10f, (float) t.getDensity(), mouseX, mouseY,
+                v -> t.setDensity(v.intValue()));
         }
         return y + 6;
     }
@@ -232,6 +240,7 @@ public class ClickGuiScreen extends Screen {
                 return "Render";
             case "Snow":
             case "Halo":
+            case "Trail":
                 return "Cosmetic";
             case "Sprint":
                 return "Movement";
@@ -294,6 +303,7 @@ public class ClickGuiScreen extends Screen {
         if (m instanceof Nametags) return 32;
         if (m instanceof Snow) return 32;
         if (m instanceof Halo) return 60;
+        if (m instanceof Trail) return 32;
         return 0;
     }
 
@@ -382,6 +392,16 @@ public class ClickGuiScreen extends Screen {
                 dragging = makeSlider(x + 6, y + 73, w - 12, 0.5f, 2f, h.getSize(), v -> h.setSize(v));
                 applyDrag(mx); return true;
             }
+        } else if (m instanceof Trail) {
+            Trail t = (Trail) m;
+            if (hitSlider(x + 6, y + 13, w - 12, 6, mx, my)) {
+                dragging = makeSlider(x + 6, y + 13, w - 12, 5f, 50f, (float) t.getMaxLength(), v -> t.setMaxLength(v.intValue()));
+                applyDrag(mx); return true;
+            }
+            if (hitSlider(x + 6, y + 33, w - 12, 6, mx, my)) {
+                dragging = makeSlider(x + 6, y + 33, w - 12, 1f, 10f, (float) t.getDensity(), v -> t.setDensity(v.intValue()));
+                applyDrag(mx); return true;
+            }
         }
         return false;
     }
@@ -433,4 +453,5 @@ public class ClickGuiScreen extends Screen {
 
     @Override
     public boolean isPauseScreen() { return false; }
+            }n() { return false; }
                        }
