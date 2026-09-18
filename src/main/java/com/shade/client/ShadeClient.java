@@ -24,6 +24,7 @@ public class ShadeClient implements ClientModInitializer {
         mm.register(new Tracers());
         mm.register(new Snow());
         mm.register(new Halo());
+        mm.register(new Trail());
 
         ConfigManager.load();
         AltManager.load();
