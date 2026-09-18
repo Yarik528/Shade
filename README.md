@@ -14,7 +14,7 @@
 
 1. Fabric Loader 0.11.6 для 1.16.5
 2. Fabric API 0.42.0+1.16 — в `.minecraft/mods/`
-3. Скачать `shade-1.0.0.jar` из [Releases](../../releases) — в `.minecraft/mods/`
+3. Скачать `shade-1.2.0.jar` из [Releases](../../releases) — в `.minecraft/mods/`
 4. Запустить через профиль `fabric-loader-0.11.6-1.16.5`
 
 ## Управление
@@ -31,7 +31,7 @@
 ./gradlew build
 ```
 
-Готовый jar — в `build/libs/shade-1.0.0.jar`.
+Готовый jar — в `build/libs/shade-1.2.0.jar`.
 
 ## Требования
 
