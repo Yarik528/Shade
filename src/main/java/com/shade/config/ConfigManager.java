@@ -63,6 +63,13 @@ public class ConfigManager {
                 mod.addProperty("green", h.getGreen());
                 mod.addProperty("blue", h.getBlue());
                 mod.addProperty("size", h.getSize());
+            } else if (m instanceof Trail) {
+                Trail t = (Trail) m;
+                mod.addProperty("maxLength", t.getMaxLength());
+                mod.addProperty("density", t.getDensity());
+                mod.addProperty("red", t.getRed());
+                mod.addProperty("green", t.getGreen());
+                mod.addProperty("blue", t.getBlue());
             }
             root.add(m.getName(), mod);
         }
@@ -130,6 +137,13 @@ public class ConfigManager {
                     h.setGreen(mod.get("green").getAsFloat());
                     h.setBlue(mod.get("blue").getAsFloat());
                     h.setSize(mod.get("size").getAsFloat());
+                } else if (m instanceof Trail && mod.has("maxLength")) {
+                    Trail t = (Trail) m;
+                    t.setMaxLength(mod.get("maxLength").getAsInt());
+                    t.setDensity(mod.get("density").getAsInt());
+                    t.setRed(mod.get("red").getAsFloat());
+                    t.setGreen(mod.get("green").getAsFloat());
+                    t.setBlue(mod.get("blue").getAsFloat());
                 }
             }
         } catch (Exception e) {
