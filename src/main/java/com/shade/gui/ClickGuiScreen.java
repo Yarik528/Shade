@@ -453,5 +453,4 @@ public class ClickGuiScreen extends Screen {
 
     @Override
     public boolean isPauseScreen() { return false; }
-            }n() { return false; }
-                       }
+            }
