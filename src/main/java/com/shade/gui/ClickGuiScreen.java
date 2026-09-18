@@ -56,7 +56,7 @@ public class ClickGuiScreen extends Screen {
         fill(matrices, px, py, px + PANEL_W, py + 22, BG_PANEL);
         fill(matrices, px, py, px + 3, py + 22, ACCENT);
         textRenderer.draw(matrices, "SHADE", px + 10, py + 7, ACCENT);
-        textRenderer.draw(matrices, "v1.0", px + PANEL_W - 34, py + 7, TEXT_DIM);
+        textRenderer.draw(matrices, "v1.2", px + PANEL_W - 34, py + 7, TEXT_DIM);
 
         int catY = py + 30;
         for (int i = 0; i < categories.length; i++) {
