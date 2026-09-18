@@ -40,7 +40,7 @@ public class Watermark {
         TextRenderer tr = mc.textRenderer;
 
         String brand   = "Shade";
-        String version = "v1.1";
+        String version = "v1.2";
         String name    = mc.player.getName().asString();
         String fps     = getFps() + " fps";
         String time    = TIME_FORMAT.format(new Date());
