@@ -5,6 +5,7 @@ import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawableHelper;
 import net.minecraft.client.util.math.MatrixStack;
 
+import java.lang.reflect.Field;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -18,6 +19,20 @@ public class Watermark {
 
     private static final SimpleDateFormat TIME_FORMAT = new SimpleDateFormat("HH:mm");
 
+    private static Field FPS_FIELD = null;
+
+    private static int getFps() {
+        try {
+            if (FPS_FIELD == null) {
+                FPS_FIELD = MinecraftClient.class.getDeclaredField("currentFps");
+                FPS_FIELD.setAccessible(true);
+            }
+            return FPS_FIELD.getInt(null);
+        } catch (Exception e) {
+            return 0;
+        }
+    }
+
     public static void render(MatrixStack matrices) {
         MinecraftClient mc = MinecraftClient.getInstance();
         if (mc.player == null || mc.options.hudHidden) return;
@@ -27,7 +42,7 @@ public class Watermark {
         String brand   = "Shade";
         String version = "v1.1";
         String name    = mc.player.getName().asString();
-        String fps     = mc.getCurrentFps() + " fps";
+        String fps     = getFps() + " fps";
         String time    = TIME_FORMAT.format(new Date());
 
         int brandW   = tr.getWidth(brand);
@@ -42,9 +57,7 @@ public class Watermark {
         int x = MARGIN;
         int y = MARGIN;
 
-        // фон
         DrawableHelper.fill(matrices, x - 2, y - 2, x + totalW + 6, y + 10, BG);
-        // акцентная полоса слева
         DrawableHelper.fill(matrices, x - 2, y - 2, x - 1, y + 10, ACCENT);
 
         int cx = x;
@@ -71,4 +84,4 @@ public class Watermark {
 
         tr.draw(matrices, time, cx, y, TEXT_DIM);
     }
-}
+                }
