@@ -17,6 +17,7 @@ public class HudRenderer {
     private static final int BG     = 0x90000000;
     private static final int TEXT   = 0xFFFFFFFF;
     private static final int MARGIN = 4;
+    private static final int TOP_OFFSET = 16; // под Watermark
 
     public static void render(MatrixStack matrices) {
         MinecraftClient mc = MinecraftClient.getInstance();
@@ -31,15 +32,8 @@ public class HudRenderer {
         if (active.isEmpty()) return;
         active.sort(Comparator.comparing(Module::getName));
 
-        String title = "Shade";
-        int titleW = tr.getWidth(title);
-        int x = MARGIN, y = MARGIN;
-
-        DrawableHelper.fill(matrices, x - 2, y - 2, x + titleW + 4, y + 10, BG);
-        DrawableHelper.fill(matrices, x - 2, y - 2, x - 1, y + 10, ACCENT);
-        tr.draw(matrices, title, x, y, ACCENT);
-
-        y += 14;
+        int x = MARGIN;
+        int y = MARGIN + TOP_OFFSET;
 
         for (Module m : active) {
             String name = m.getName();
